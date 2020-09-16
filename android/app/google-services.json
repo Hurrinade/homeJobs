@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "980504291897",
+    "firebase_url": "https://homejobs-237db.firebaseio.com",
+    "project_id": "homejobs-237db",
+    "storage_bucket": "homejobs-237db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980504291897:android:3f2e7c2a393359c7a2fbe8",
+        "android_client_info": {
+          "package_name": "com.example.homejobs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980504291897-nr2c1nd5934bikt6hc82fc5fcrblk425.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIreYoomC_EHXXHHT8nKM2p1jx4uvwpnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980504291897-nr2c1nd5934bikt6hc82fc5fcrblk425.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
