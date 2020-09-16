@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homejobs/services/database.dart';
+import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 import 'package:intl/intl.dart';
 
 class Update extends StatefulWidget {
@@ -101,6 +102,7 @@ class _UpdateState extends State<Update> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.indigo[300],
       body: SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:homejobs/services/database.dart';
+import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 import 'package:intl/intl.dart';
 
 class Adding extends StatefulWidget {
@@ -9,8 +10,8 @@ class Adding extends StatefulWidget {
 }
 
 class _AddingState extends State<Adding> {
-  Color color = Color(0xff443a49);
-  Color pickerColor = Color(0xff443a49);
+  Color color = Color(0xffff9800);
+  Color pickerColor = Color(0xffff9800);
   String name = '';
   String date;
   String userName = '';
@@ -33,6 +34,7 @@ class _AddingState extends State<Adding> {
     }
   }
 
+  //alert dialog if there already is that job
   void _myAlert() {
     showDialog(
         context: context,
@@ -137,7 +139,9 @@ class _AddingState extends State<Adding> {
                     FlatButton(
                       child:
                           Text('Chose color', style: TextStyle(fontSize: 15.0)),
-                      onPressed: _myColorDialog,
+                      onPressed: () {
+                        _myColorDialog();
+                      },
                     ),
                   ],
                 ),
@@ -181,6 +185,7 @@ class _AddingState extends State<Adding> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.indigo[300],
       body: SingleChildScrollView(

@@ -6,6 +6,7 @@ import 'package:homejobs/Screens/update.dart';
 import 'package:homejobs/services/auth.dart';
 import 'package:homejobs/models/job.dart';
 import 'package:homejobs/services/database.dart';
+import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -96,7 +97,8 @@ class _HomeState extends State<Home> {
       child: Dismissible(
         background: Container(
           color: Colors.red,
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.blockSizeHorizontal * 20),
           child: Icon(
             Icons.delete,
             color: Colors.white,
@@ -190,6 +192,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.indigo[300],
       appBar: AppBar(
