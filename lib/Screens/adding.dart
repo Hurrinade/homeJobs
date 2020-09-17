@@ -116,13 +116,16 @@ class _AddingState extends State<Adding> {
   Widget _myAdd(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 100.0),
+        SizedBox(height: SizeConfig.blockSizeVertical * 12.0),
         Container(
           width: double.infinity,
-          height: 450,
+          height: SizeConfig.blockSizeVertical * 65,
           decoration: myBoxDecoration(context),
           child: Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 7,
+                right: SizeConfig.blockSizeHorizontal * 7,
+                top: SizeConfig.blockSizeHorizontal * 7),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -130,7 +133,7 @@ class _AddingState extends State<Adding> {
                   'Add new job',
                   style: TextStyle(fontSize: 35.0),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 3),
                 Row(
                   children: <Widget>[
                     CircleAvatar(
@@ -145,7 +148,7 @@ class _AddingState extends State<Adding> {
                     ),
                   ],
                 ),
-                SizedBox(height: 30.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 5),
                 Text(
                   'Job name',
                   style: TextStyle(fontSize: 15.0),
@@ -157,7 +160,7 @@ class _AddingState extends State<Adding> {
                     });
                   },
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 6),
                 Text('Your name', style: TextStyle(fontSize: 15.0)),
                 TextField(
                   onChanged: (val) {
@@ -166,7 +169,7 @@ class _AddingState extends State<Adding> {
                     });
                   },
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 8),
                 Center(
                     child: RaisedButton(
                         color: Colors.indigo[200],
@@ -190,7 +193,10 @@ class _AddingState extends State<Adding> {
       backgroundColor: Colors.indigo[300],
       body: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+        padding: EdgeInsets.only(
+            left: SizeConfig.blockSizeHorizontal * 7,
+            right: SizeConfig.blockSizeHorizontal * 7,
+            top: SizeConfig.blockSizeVertical * 8),
         child: _myAdd(context),
       )),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homejobs/Screens/loading.dart';
 import 'package:homejobs/services/auth.dart';
 import 'package:homejobs/models/email_textField.dart';
+import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 
 class Register extends StatefulWidget {
   final Function toggle;
@@ -51,13 +52,16 @@ class _RegisterState extends State<Register> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          SizedBox(height: 100),
+          SizedBox(height: SizeConfig.blockSizeVertical * 12),
           Container(
             width: double.infinity,
-            height: 450,
+            height: SizeConfig.blockSizeVertical * 60,
             decoration: myBoxDecoration(context),
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+              padding: EdgeInsets.only(
+                  left: SizeConfig.blockSizeHorizontal * 6,
+                  right: SizeConfig.blockSizeHorizontal * 7,
+                  top: SizeConfig.blockSizeHorizontal * 6),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -65,14 +69,14 @@ class _RegisterState extends State<Register> {
                     'Register',
                     style: TextStyle(fontSize: 35),
                   ),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 5),
                   Text('Email'),
                   emailTextField(context, emailController),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 5),
                   Text('Password'),
                   passwordTextField(context, passwordController),
                   SizedBox(
-                    height: 40.0,
+                    height: SizeConfig.blockSizeVertical * 6,
                   ),
                   Center(
                       child: RaisedButton(
@@ -95,7 +99,7 @@ class _RegisterState extends State<Register> {
                       }
                     },
                   )),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 2),
                   Center(
                       child: FlatButton(
                           onPressed: () => setState(() => widget.toggle()),
@@ -111,10 +115,11 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return load
         ? Loading()
         : Scaffold(
-          backgroundColor: Colors.teal[200],
+            backgroundColor: Colors.teal[200],
             body: Stack(
               children: <Widget>[
                 Column(
@@ -122,8 +127,10 @@ class _RegisterState extends State<Register> {
                 ),
                 SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+                    padding: EdgeInsets.only(
+                        left: SizeConfig.blockSizeHorizontal * 7,
+                        right: SizeConfig.blockSizeHorizontal * 7,
+                        top: SizeConfig.blockSizeVertical * 8),
                     child: _myRegisterForm(context),
                   ),
                 ),

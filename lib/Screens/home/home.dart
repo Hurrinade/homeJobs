@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
 
   Widget _myDrawer(BuildContext context) {
     return SizedBox(
-      width: 180.0,
+      width: SizeConfig.blockSizeHorizontal * 50.0,
       child: Drawer(
         child: Container(
           color: Colors.indigo[100],
@@ -143,7 +143,7 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                  width: 150.0,
+                  width: SizeConfig.blockSizeHorizontal * 40.0,
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -156,10 +156,10 @@ class _HomeState extends State<Home> {
                     color: Colors.orange[100],
                   )),
               SizedBox(
-                height: 50.0,
+                height: SizeConfig.blockSizeHorizontal * 15.0,
               ),
               SizedBox(
-                width: 150.0,
+                width: SizeConfig.blockSizeHorizontal * 40.0,
                 child: RaisedButton(
                   onPressed: null,
                   child: Text(
@@ -170,10 +170,10 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(
-                height: 50.0,
+                height: SizeConfig.blockSizeHorizontal * 15.0,
               ),
               SizedBox(
-                width: 150.0,
+                width: SizeConfig.blockSizeHorizontal * 40.0,
                 child: RaisedButton(
                   onPressed: () => _auth.userSignOut(),
                   child: Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homejobs/Screens/loading.dart';
 import 'package:homejobs/services/auth.dart';
 import 'package:homejobs/models/email_textField.dart';
+import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -50,7 +51,8 @@ class _SignInState extends State<SignIn> {
   }
 
   //password text field
-  Widget passwordTextField(BuildContext context, TextEditingController controller) {
+  Widget passwordTextField(
+      BuildContext context, TextEditingController controller) {
     return TextFormField(
       obscureText: true,
       controller: controller,
@@ -63,31 +65,39 @@ class _SignInState extends State<SignIn> {
       key: _myFormKey,
       child: Column(
         children: <Widget>[
-          SizedBox(height: 100),
+          SizedBox(height: SizeConfig.blockSizeVertical * 12),
           Container(
             //box with login UI
             width: double.infinity,
-            height: 450,
+            height: SizeConfig.blockSizeVertical * 60,
             decoration: myBoxDecoration(context),
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+              padding: EdgeInsets.only(
+                  left: SizeConfig.blockSizeHorizontal * 6,
+                  right: SizeConfig.blockSizeHorizontal * 7,
+                  top: SizeConfig.blockSizeHorizontal * 6),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     'Login',
-                    style: TextStyle(fontSize: 35),
+                    style: TextStyle(fontSize: 35, fontFamily: 'Grandstander'),
                   ),
-                  SizedBox(height: 30.0),
-                  Text('Email'),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 5),
+                  Text(
+                    'Email',
+                    style:
+                        TextStyle(fontFamily: 'Grandstander', fontSize: 16.0),
+                  ),
                   emailTextField(context, emailController),
-                  SizedBox(height: 30.0),
-                  Text('Password'),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 5),
+                  Text('Password', style: TextStyle(fontSize: 16.0)),
                   passwordTextField(context, passwordController),
                   SizedBox(
-                    height: 40.0,
+                    height: SizeConfig.blockSizeVertical * 6,
                   ),
-                  Center(child: RaisedButton(
+                  Center(
+                      child: RaisedButton(
                     color: Colors.lightBlue[100],
                     child: Text('Login'),
                     onPressed: () async {
@@ -110,7 +120,7 @@ class _SignInState extends State<SignIn> {
                       }
                     },
                   )),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 2),
                   Center(
                       child: FlatButton(
                           onPressed: () => setState(() => widget.toggle()),
@@ -127,6 +137,7 @@ class _SignInState extends State<SignIn> {
   //main build of a sign in
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return load
         ? Loading()
         : Scaffold(
@@ -138,8 +149,10 @@ class _SignInState extends State<SignIn> {
                 ),
                 SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+                    padding: EdgeInsets.only(
+                        left: SizeConfig.blockSizeHorizontal * 7,
+                        right: SizeConfig.blockSizeHorizontal * 7,
+                        top: SizeConfig.blockSizeVertical * 8),
                     child: _mySignInForm(context),
                   ),
                 ),

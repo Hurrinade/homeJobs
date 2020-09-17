@@ -53,13 +53,16 @@ class _UpdateState extends State<Update> {
   Widget _myAdd(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 100.0),
+        SizedBox(height: SizeConfig.blockSizeVertical * 13.0),
         Container(
           width: double.infinity,
-          height: 450,
+          height: SizeConfig.blockSizeVertical * 60,
           decoration: myBoxDecoration(context),
           child: Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 6,
+                right: SizeConfig.blockSizeHorizontal * 6,
+                top: SizeConfig.blockSizeHorizontal * 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -67,13 +70,13 @@ class _UpdateState extends State<Update> {
                   'Update job',
                   style: TextStyle(fontSize: 20.0),
                 ),
-                SizedBox(height: 40.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 6),
                 Center(
                     child: Text(
                   '${widget.jobName}',
                   style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
                 )),
-                SizedBox(height: 50.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 6),
                 Text('Your name'),
                 TextField(
                   onChanged: (val) {
@@ -82,7 +85,7 @@ class _UpdateState extends State<Update> {
                     });
                   },
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: SizeConfig.blockSizeVertical * 6),
                 Center(
                     child: RaisedButton(
                         color: Colors.indigo[200],
@@ -107,7 +110,10 @@ class _UpdateState extends State<Update> {
       backgroundColor: Colors.indigo[300],
       body: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+        padding: EdgeInsets.only(
+            left: SizeConfig.blockSizeHorizontal * 7,
+            right: SizeConfig.blockSizeHorizontal * 7,
+            top: SizeConfig.blockSizeVertical * 8),
         child: _myAdd(context),
       )),
     );
