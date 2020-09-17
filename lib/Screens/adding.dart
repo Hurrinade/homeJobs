@@ -1,37 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:homejobs/Screens/loading.dart';
+import 'package:homejobs/models/date.dart';
+import 'package:homejobs/models/job.dart';
+import 'package:homejobs/services/auth.dart';
 import 'package:homejobs/services/database.dart';
 import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 import 'package:intl/intl.dart';
 
 class Adding extends StatefulWidget {
   @override
-  _AddingState createState() => _AddingState();
+  AddingState createState() => AddingState();
 }
 
-class _AddingState extends State<Adding> {
+class AddingState extends State<Adding> {
   Color color = Color(0xffff9800);
   Color pickerColor = Color(0xffff9800);
   String name = '';
-  String date;
   String userName = '';
+  String date;
   DatabaseService _db = DatabaseService();
+  AuthService _auth = AuthService();
+  static List<Map> customDate = [];
+
+  List<Map> get custom => customDate;
+
+  Future<List<Dates>> _myTrackerBody(String name) async {
+    var docRef = await _db.jobCollection.doc(name).get();
+    var data = docRef.data();
+    Job date = Job.fromMap(data);
+
+    //return date.dates;
+  }
 
   //adding function
   void _add(BuildContext context, String name, String userName) async {
     final exists = await _db.jobCollection.doc(name).get();
-
+    //List<Map> curr = await _myTrackerBody(name);
     if (exists.exists) {
       return _myAlert();
-    } else {
+    } else if (customDate != null) {
       //gets date when we add new job
-
       DateTime now = DateTime.now();
       DateFormat formatter = DateFormat('dd.MM.yyyy').add_jm();
       final String formatted = formatter.format(now);
-      await _db.updateJob(name, formatted, userName, color.toString());
+
+      Dates dat = Dates(date: formatted, user: userName);
+      Map dates = dat.toMap();
+      if (customDate.length >= 10) {
+        customDate.removeAt(0);
+      } else
+        customDate.add(dates);
+
+      await _db.updateJob(
+          name, formatted, userName, color.toString(), customDate);
       Navigator.pop(context);
-    }
+    } else
+      Loading();
   }
 
   //alert dialog if there already is that job
@@ -160,8 +187,11 @@ class _AddingState extends State<Adding> {
                     });
                   },
                 ),
-                SizedBox(height: SizeConfig.blockSizeVertical * 6),
-                Text('Your name', style: TextStyle(fontSize: 15.0)),
+                SizedBox(height: SizeConfig.blockSizeVertical * 5),
+                Text(
+                  'Your name',
+                  style: TextStyle(fontSize: 15.0),
+                ),
                 TextField(
                   onChanged: (val) {
                     setState(() {

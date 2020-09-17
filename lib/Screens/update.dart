@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homejobs/Screens/adding.dart';
+import 'package:homejobs/models/date.dart';
 import 'package:homejobs/services/database.dart';
 import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 import 'package:intl/intl.dart';
@@ -24,11 +26,21 @@ class _UpdateState extends State<Update> {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('dd.MM.yyyy').add_jm();
     final String formatted = formatter.format(now);
+
+    Dates dat = Dates(date: formatted, user: userName);
+
+    Map dates = dat.toMap();
+    if (AddingState().custom.length >= 10) {
+      AddingState().custom.removeAt(0);
+    } else
+      AddingState().custom.add(dates);
+
     await _db.updateJob(
       name,
       formatted,
       userName,
       widget.color.toString(),
+      AddingState().custom,
     ); //updating job info
   }
 

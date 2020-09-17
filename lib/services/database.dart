@@ -17,12 +17,14 @@ class DatabaseService {
     String date,
     String userName,
     String color,
+    List<Map> dates,
   ) async {
     return await jobCollection.doc(name).set({
       'name': name,
       'date': date,
       'userName': userName,
       'color': color,
+      'dates': dates,
     });
   }
 }
