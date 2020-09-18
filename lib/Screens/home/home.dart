@@ -23,19 +23,22 @@ class _HomeState extends State<Home> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: Colors.teal[200],
             title: new Text("Chose"),
             //content: new Text("There already is that job"),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               FlatButton(
-                child: Text("Edit", style: TextStyle(fontSize: 17.0)),
+                child: Text("Update",
+                    style: TextStyle(fontSize: 17.0, color: Colors.black)),
                 onPressed: () {
                   Navigator.of(context).pop();
                   _update(context, jobName, jobColor);
                 },
               ),
               FlatButton(
-                child: Text("Tracker", style: TextStyle(fontSize: 17.0)),
+                child: Text("Tracker",
+                    style: TextStyle(fontSize: 17.0, color: Colors.black)),
                 onPressed: () {
                   Navigator.of(context).pop();
                   _tracker(context, jobName);
@@ -61,6 +64,23 @@ class _HomeState extends State<Home> {
   void _update(BuildContext context, String jobName, String color) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => Update(jobName: jobName, color: color)));
+  }
+
+  //adding box decoration
+  BoxDecoration myBoxDecoration(BuildContext context) {
+    return new BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        gradient: LinearGradient(colors: [Colors.blue[300], Colors.blue[200]]),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(0.0, 5.0),
+          ),
+          BoxShadow(
+            color: Colors.amber[100],
+            offset: Offset(4.0, -4.0),
+          ),
+        ]);
   }
 
   //body of our home screen refreshes data with stream builder which gets stream every time some data is changed in database
@@ -91,42 +111,53 @@ class _HomeState extends State<Home> {
     int value = int.parse(valueString, radix: 16);
     Color color = new Color(value);
 
-    return Card(
-      color: Colors.red[50],
-      key: ValueKey(job.name),
-      child: Dismissible(
-        background: Container(
-          color: Colors.red,
-          padding: EdgeInsets.symmetric(
-              horizontal: SizeConfig.blockSizeHorizontal * 20),
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-          alignment: AlignmentDirectional.centerEnd,
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        color: Colors.black12,
         key: ValueKey(job.name),
-        direction: DismissDirection.endToStart,
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: color,
+        child: Dismissible(
+          background: Container(
+            color: Colors.red,
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 20),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            alignment: AlignmentDirectional.centerEnd,
           ),
-          title: Text(
-            '${job.name}',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          key: ValueKey(job.name),
+          direction: DismissDirection.endToStart,
+          child: Container(
+            decoration: myBoxDecoration(context),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: color,
+              ),
+              title: Text(
+                '${job.name}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
+              ),
+              subtitle: Text(
+                '${job.date}',
+              ),
+              trailing: Text(
+                '${job.userName}',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                _myUpdateTrackDialog(context, job.name, job.color);
+              },
+            ),
           ),
-          subtitle: Text('${job.date}'),
-          trailing: Text(
-            '${job.userName}',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            _myUpdateTrackDialog(context, job.name, job.color);
+          onDismissed: (direction) async {
+            await _db.jobCollection.doc(job.name).delete();
           },
         ),
-        onDismissed: (direction) async {
-          await _db.jobCollection.doc(job.name).delete();
-        },
       ),
     );
   }
@@ -136,7 +167,12 @@ class _HomeState extends State<Home> {
       width: SizeConfig.blockSizeHorizontal * 50.0,
       child: Drawer(
         child: Container(
-          color: Colors.indigo[100],
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.lightBlue[900], Colors.lightBlue[100]],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
           padding: EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -145,30 +181,15 @@ class _HomeState extends State<Home> {
               SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 40.0,
                   child: RaisedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _add(context);
-                    },
-                    child: Text(
-                      'Add new job',
-                      style: TextStyle(fontSize: 17.0),
-                    ),
-                    color: Colors.orange[100],
-                  )),
-              SizedBox(
-                height: SizeConfig.blockSizeHorizontal * 15.0,
-              ),
-              SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 40.0,
-                child: RaisedButton(
-                  onPressed: null,
-                  child: Text(
-                    'Sign out',
-                    style: TextStyle(fontSize: 17.0),
-                  ),
-                  color: Colors.orange[100],
-                ),
-              ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _add(context);
+                      },
+                      child: Text(
+                        'Add new job',
+                        style: TextStyle(fontSize: 17.0),
+                      ),
+                      color: Colors.lightBlue[100])),
               SizedBox(
                 height: SizeConfig.blockSizeHorizontal * 15.0,
               ),
@@ -180,7 +201,7 @@ class _HomeState extends State<Home> {
                     'Sign out',
                     style: TextStyle(fontSize: 17.0),
                   ),
-                  color: Colors.orange[100],
+                  color: Colors.lightBlue[100],
                 ),
               ),
             ],
@@ -194,13 +215,18 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.indigo[300],
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.indigo,
         title: Text('Active Jobs'),
       ),
-      body: _myBody(context),
+      body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.lightBlue[900], Colors.lightBlue[100]],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
+          child: _myBody(context)),
       endDrawer: _myDrawer(context),
     );
   }

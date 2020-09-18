@@ -1,11 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:homejobs/Screens/loading.dart';
 import 'package:homejobs/models/date.dart';
-import 'package:homejobs/models/job.dart';
-import 'package:homejobs/services/auth.dart';
 import 'package:homejobs/services/database.dart';
 import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 import 'package:intl/intl.dart';
@@ -16,49 +11,33 @@ class Adding extends StatefulWidget {
 }
 
 class AddingState extends State<Adding> {
-  Color color = Color(0xffff9800);
-  Color pickerColor = Color(0xffff9800);
+  Color color = Color(0xfffff176);
+  Color pickerColor = Color(0xfffff176);
   String name = '';
   String userName = '';
   String date;
   DatabaseService _db = DatabaseService();
-  AuthService _auth = AuthService();
-  static List<Map> customDate = [];
-
-  List<Map> get custom => customDate;
-
-  Future<List<Dates>> _myTrackerBody(String name) async {
-    var docRef = await _db.jobCollection.doc(name).get();
-    var data = docRef.data();
-    Job date = Job.fromMap(data);
-
-    //return date.dates;
-  }
+  List<Map> customDate = [];
 
   //adding function
   void _add(BuildContext context, String name, String userName) async {
-    final exists = await _db.jobCollection.doc(name).get();
-    //List<Map> curr = await _myTrackerBody(name);
+    final exists = await _db.jobCollection.doc(name.trim()).get();
+    print(exists.exists);
     if (exists.exists) {
       return _myAlert();
-    } else if (customDate != null) {
+    } else {
       //gets date when we add new job
       DateTime now = DateTime.now();
       DateFormat formatter = DateFormat('dd.MM.yyyy').add_jm();
       final String formatted = formatter.format(now);
 
-      Dates dat = Dates(date: formatted, user: userName);
-      Map dates = dat.toMap();
-      if (customDate.length >= 10) {
-        customDate.removeAt(0);
-      } else
-        customDate.add(dates);
-
+      Dates date = Dates(user: userName, date: formatted);
+      Map dates = date.toMap();
+      customDate.add(dates);
       await _db.updateJob(
           name, formatted, userName, color.toString(), customDate);
       Navigator.pop(context);
-    } else
-      Loading();
+    }
   }
 
   //alert dialog if there already is that job
@@ -89,6 +68,10 @@ class AddingState extends State<Adding> {
     return BoxDecoration(
         color: Colors.lightBlue[50],
         borderRadius: BorderRadius.circular(8.0),
+        gradient: LinearGradient(
+            colors: [Colors.lightBlue[300], Colors.lightBlue[100]],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter),
         boxShadow: [
           BoxShadow(
               color: Colors.black12,
@@ -164,7 +147,12 @@ class AddingState extends State<Adding> {
                 Row(
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundColor: color,
+                      backgroundColor: Colors.lightBlue[200],
+                      radius: 25.0,
+                      child: CircleAvatar(
+                        backgroundColor: color,
+                        radius: 20.0,
+                      ),
                     ),
                     FlatButton(
                       child:
@@ -220,15 +208,23 @@ class AddingState extends State<Adding> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.indigo[300],
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: EdgeInsets.only(
-            left: SizeConfig.blockSizeHorizontal * 7,
-            right: SizeConfig.blockSizeHorizontal * 7,
-            top: SizeConfig.blockSizeVertical * 8),
-        child: _myAdd(context),
-      )),
+      body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.indigo[300], Colors.indigo[100]],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: SizeConfig.blockSizeHorizontal * 7,
+                  right: SizeConfig.blockSizeHorizontal * 7,
+                  top: SizeConfig.blockSizeVertical * 8,
+                  bottom: SizeConfig.blockSizeVertical * 15),
+              child: _myAdd(context),
+            ),
+          )),
     );
   }
 }

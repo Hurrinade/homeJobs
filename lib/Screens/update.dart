@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:homejobs/Screens/adding.dart';
+import 'package:homejobs/Screens/loading.dart';
 import 'package:homejobs/models/date.dart';
+import 'package:homejobs/models/job.dart';
 import 'package:homejobs/services/database.dart';
 import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 import 'package:intl/intl.dart';
@@ -19,29 +20,49 @@ class _UpdateState extends State<Update> {
   String userName = '';
   DatabaseService _db = DatabaseService();
 
+  Future<List<Dates>> _myTrackerBody(String name) async {
+    var docRef = await _db.jobCollection.doc(name).get();
+    var data = docRef.data();
+    Job date = Job.fromMap(data);
+    return date.dates;
+  }
+
+  List<Map> convertCustomStepsToMap({List<Dates> dates}) {
+    List<Map> dat = [];
+    dates.forEach((Dates date) {
+      Map mapDate = date.toMap();
+      dat.add(mapDate);
+    });
+    return dat;
+  }
+
   //adding function
   void _update(String name, String userName) async {
     //gets date when we click update
-
+    List<Dates> curr = await _myTrackerBody(name);
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('dd.MM.yyyy').add_jm();
     final String formatted = formatter.format(now);
 
-    Dates dat = Dates(date: formatted, user: userName);
+    if (curr != null) {
+      Dates date = Dates(date: formatted, user: userName);
+      curr.add(date);
+      List<Map> converted = convertCustomStepsToMap(dates: curr);
 
-    Map dates = dat.toMap();
-    if (AddingState().custom.length >= 10) {
-      AddingState().custom.removeAt(0);
+      if (converted.length >= 10) {
+        converted.removeAt(0);
+      }
+
+      await _db.updateJob(
+        name,
+        formatted,
+        userName,
+        widget.color.toString(),
+        converted,
+      );
     } else
-      AddingState().custom.add(dates);
-
-    await _db.updateJob(
-      name,
-      formatted,
-      userName,
-      widget.color.toString(),
-      AddingState().custom,
-    ); //updating job info
+      Loading();
+    //updating job info
   }
 
   //adding box decoration
@@ -49,6 +70,10 @@ class _UpdateState extends State<Update> {
     return BoxDecoration(
         color: Colors.lightBlue[50],
         borderRadius: BorderRadius.circular(8.0),
+        gradient: LinearGradient(
+            colors: [Colors.blue[300], Colors.blue[100]],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter),
         boxShadow: [
           BoxShadow(
               color: Colors.black12,
@@ -120,14 +145,24 @@ class _UpdateState extends State<Update> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.indigo[300],
-      body: SingleChildScrollView(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.indigo[300], Colors.indigo[100]],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter),
+        ),
+        child: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.only(
-            left: SizeConfig.blockSizeHorizontal * 7,
-            right: SizeConfig.blockSizeHorizontal * 7,
-            top: SizeConfig.blockSizeVertical * 8),
-        child: _myAdd(context),
-      )),
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 7,
+                right: SizeConfig.blockSizeHorizontal * 7,
+                top: SizeConfig.blockSizeVertical * 8,
+                bottom: SizeConfig.blockSizeVertical * 19),
+            child: _myAdd(context),
+          ),
+        ),
+      ),
     );
   }
 }

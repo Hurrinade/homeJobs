@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:homejobs/Screens/loading.dart';
 import 'package:homejobs/services/auth.dart';
 import 'package:homejobs/models/email_textField.dart';
-import 'package:homejobs/services/database.dart';
 import 'package:homejobs/utils/Sizing/SizeConfig.dart';
 
 class Register extends StatefulWidget {
@@ -15,7 +14,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   AuthService _auth = AuthService();
-  DatabaseService _db = DatabaseService();
+  //DatabaseService _db = DatabaseService();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
